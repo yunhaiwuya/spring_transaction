@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+   
+   <bean id="helloWorld" class="com.transation.model.HelloWorld">
+   		<property name="message" value="I love you!"/>
+   </bean>
+   <bean id="student" class="com.transation.model.Student"/>
+   <bean id="studentDao1" class="com.transation.dao.StudentDaoImp">
+   		<property name="dataSource" ref="dataSource"/>
+   </bean>
+   <!-- 使用jdbcTemplate -->
+   <bean id="studentDao2" class="com.transation.dao.StudentTemplateDaoImp">
+   		<property name="dataSource" ref="dataSource"/>
+   		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+   </bean>
+   <!-- 使用jdbcDaoSupport -->
+   <bean id="studentDao" class="com.transation.dao.StudentJdbcDaoSupportDaoImp">
+   		<property name="dataSource" ref="dataSource"/>
+   </bean>
+   
+   <bean id="book" class="com.transation.model.Book"/>
+   <bean id="bookDao" class="com.transation.dao.BookDaoImp">
+   		<property name="dataSource" ref="dataSource"/>
+   </bean>
+   
+   <bean id="buyBookService" class="com.transation.service.BuyBookServiceImp">
+   		<property name="studentDao" ref="studentDao"/>
+   		<property name="bookDao" ref="bookDao"/>
+   </bean>
+   <bean id="buyBookService1" class="com.transation.service.BuyBookServiceImp1">
+   		<property name="studentDao" ref="studentDao"/>
+   		<property name="bookDao" ref="bookDao"/>
+   </bean>
+</beans>

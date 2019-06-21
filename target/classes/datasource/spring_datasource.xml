@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+   
+   <!-- 加载properties属性配置文件 -->
+    
+   <!-- 
+   		Spring本身也提供了一个简单的数据源实现类DriverManagerDataSource ，
+   		它位于org.springframework.jdbc.datasource包中。这个类实现了javax.sql.DataSource接口，
+   		但 它并没有提供池化连接的机制，每次调用getConnection()获取新连接时，
+   		只是简单地创建一个新的连接。因此，这个数据源类比较适合在单元测试 或简单的独立应用中使用，
+   		因为它不需要额外的依赖类。 
+    -->
+   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+   		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+   		<property name="url" value="${jdbc.url}"/>
+   		<property name="username" value="${jdbc.username}"/>
+   		<property name="password" value="${jdbc.password}"/>
+   </bean>
+   
+</beans>

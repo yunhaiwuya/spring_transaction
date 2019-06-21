@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+   
+   <!-- 加载properties属性配置文件 -->
+   
+   <!--  C3P0是一个开放源代码的JDBC数据源实现项目，它在lib目录中与Hibernate一起发布，
+   		  实现了JDBC3和JDBC2扩展规范说明的 Connection 和Statement 池   
+   	-->
+   <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+   		<!-- 基础配置 -->
+   		<property name="driverClass" value="${jdbc.driverClassName}"/>
+   		<property name="jdbcUrl" value="${jdbc.url}"/>
+   		<property name="user" value="${jdbc.username}"/>
+   		<property name="password" value="${jdbc.password}"/>
+   		
+   		<!-- 关键配置 -->
+     	<!--初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+   		<property name="initialPoolSize" value="3"/>
+   		<!-- 连接池中保留的最小连接数。Default: 2  -->
+   		<property name="minPoolSize" value="2"/>
+   		<!-- 连接池中保留的最大连接数。默认为15； -->
+   		<property name="maxPoolSize" value="15"/> 
+   		<!-- 当连接池中的连接用完时，C3P0一次同时获取的连接数。Default: 3  -->
+   		<property name="acquireIncrement" value="3"/>
+   		
+   		<!-- 性能配置 -->
+   		<!-- 控制数据源内加载的PreparedStatements数量。
+   			  如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。
+   			 Default: 0 
+   		-->
+   		<property name="maxStatements" value="8"/>
+   		<!-- maxStatementsPerConnection定义了连接池内单个连接所拥有的
+   			  最大缓存statements数。Default: 0  -->
+   		<property name="maxStatementsPerConnection" value="5"/>
+   		<!-- 最大空闲时间，超过空闲时间的连接将被丢弃。1800秒内未使用则连接被丢弃
+   		             为0或负数则永不丢弃。默认为0；   -->
+   		<property name="maxIdleTime" value="1800"/>
+   </bean>
+</beans>

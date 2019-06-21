@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+    
+   <!-- 基于 TransactionProxyFactoryBean的声明式事务管理 
+   		每个TransactionProxyFactoryBean为一个目标Bean生成一个事务代理Bean，
+   		事务代理的方法改写了目标Bean的方法，就是在目标Bean的方法执行之前加入开始事务，
+   		在目标Bean的方法正常结束之前提交事务，如果遇到特定异常则回滚。
+   -->
+   <!-- 事务管理器 -->
+   <bean id="myTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+   		<property name="dataSource" ref="dataSource"/>
+   </bean>
+   <!-- 事务代理工厂 -->
+   <!-- 生成事务代理对象 -->
+   <bean id="serviceProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+   		<property name="transactionManager" ref="myTransactionManager"/>
+   		<property name="target" ref="buyBookService"/>
+   		<property name="transactionAttributes">
+   			<props>
+   				<!-- 主要 key 是方法   
+   				   isolation
+					ISOLATION_DEFAULT  事务的隔离级别
+					PROPAGATION_REQUIRED  传播行为
+				-->
+   				<prop key="add*">ISOLATION_DEFAULT,PROPAGATION_REQUIRED</prop>
+   				<!-- -Exception 表示发生指定异常回滚，+Exception 表示发生指定异常提交 -->
+   				<prop key="buyBook">ISOLATION_DEFAULT,PROPAGATION_REQUIRED,-BuyBookException</prop>
+   			</props>
+   		</property>
+   </bean>
+</beans>
